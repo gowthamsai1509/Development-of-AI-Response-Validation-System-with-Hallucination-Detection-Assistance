@@ -1,0 +1,103 @@
+graph TD
+    %% User and UI Layer
+    subgraph UI_Layer ["1. Evaluation Input / User Interface Layer"]
+        User(["User / Evaluator"])
+        WebUI["Web Evaluation Dashboard (HTML5 / CSS3 / JS)"]
+        PresetSelector["1-Click Test Presets (TruthfulQA / SQuAD / Hallucination)"]
+    end
+
+    %% Backend API Layer
+    subgraph API_Layer ["2. Backend / API Layer (FastAPI)"]
+        API_Gateway["FastAPI Gateway / Router"]
+        InputValidator["Evaluation Input Processing & Pydantic Validation"]
+        SubEndpoints["Submission Endpoints (/api/submissions)"]
+        EvalEndpoints["Evaluation Endpoints (/api/evaluations)"]
+        KBEndpoints["Knowledge Base Endpoints (/api/knowledge-base)"]
+    end
+
+    %% Storage & Submission Database
+    subgraph Storage_Layer ["3. Evaluation Submission & Storage Layer"]
+        SubDB[("Evaluation Submission Database (SQLite / SQLAlchemy)")]
+        SubHistory["Evaluation Records & Historical Audit Logs"]
+    end
+
+    %% Reference Knowledge Base (RAG)
+    subgraph RAG_Layer ["4. Reference Knowledge Base & RAG Pipeline"]
+        RawData["Public QA Benchmarks (TruthfulQA + SQuAD)"]
+        IngestionMod["Benchmark Dataset Ingestion Module"]
+        CleaningPipeline["Data Cleaning & Standardization"]
+        ChunkerPipeline["Recursive Text Chunking Pipeline (400 chars, 50 overlap)"]
+        EmbeddingGen["Semantic Embedding Generation Module (Dense LSA / TF-IDF)"]
+        VectorDB[("FAISS Vector Database / Flat IP Index")]
+        MetadataStore[("Chunk Metadata Repository (JSON Store)")]
+        RAGRetriever["RAG Retrieval Pipeline (Top-K Semantic Search)"]
+        KBUpdateMod["Knowledge Base Update & Re-indexing Module"]
+    end
+
+    %% Multi-Agent Evaluation Committee Layer
+    subgraph Agent_Layer ["5. AI Evaluation Agent Layer (LLM-as-a-Judge Committee)"]
+        Orchestrator["Agent Orchestrator"]
+        RelevanceAgent["Relevance Judge Agent (0.0 - 1.0)"]
+        AccuracyAgent["Accuracy Judge Agent (0.0 - 1.0)"]
+        HallucinationAgent["Hallucination Detection Agent (0.0 - 1.0)"]
+        CompletenessAgent["Completeness Judge Agent (0.0 - 1.0)"]
+        VerdictAgent["Verdict Agent (Aggregate Confidence & Decision Matrix)"]
+    end
+
+    %% Results and Output Layer
+    subgraph Output_Layer ["6. Structured Evaluation Results & Dashboard"]
+        ScoringVerdictMod["Evaluation Scoring & Verdict Module"]
+        StructuredResultsMod["Structured Evaluation Results Module (JSON / Pydantic)"]
+        ReportGenMod["Evaluation Report Generation Module"]
+        BatchEvalMod["Batch Evaluation Module"]
+        DashboardView["Results & Evaluation Dashboard Interface"]
+    end
+
+    %% Data Flow Connections
+    User -->|1. Enters Question, AI Response, Optional Ref/Source| WebUI
+    PresetSelector -.-> WebUI
+    WebUI -->|HTTP POST Request| API_Gateway
+    API_Gateway --> InputValidator
+    InputValidator --> SubEndpoints
+    InputValidator --> EvalEndpoints
+    
+    SubEndpoints -->|Store Input Record| SubDB
+    SubDB --> SubHistory
+
+    %% Knowledge Base Ingestion Flow
+    RawData --> IngestionMod
+    IngestionMod --> CleaningPipeline
+    CleaningPipeline --> ChunkerPipeline
+    ChunkerPipeline --> EmbeddingGen
+    EmbeddingGen --> VectorDB
+    ChunkerPipeline -.-> MetadataStore
+    KBUpdateMod -.-> IngestionMod
+    KBEndpoints --> KBUpdateMod
+
+    %% Retrieval & Orchestration Flow
+    EvalEndpoints --> Orchestrator
+    Orchestrator -->|Query Semantic Match| RAGRetriever
+    RAGRetriever -->|Search Query Vector| VectorDB
+    VectorDB -->|Top-K Chunks| MetadataStore
+    MetadataStore -->|Return Grounded Evidence| RAGRetriever
+    RAGRetriever -->|Provide Source Context| Orchestrator
+
+    %% Agent Dispatch Flow
+    Orchestrator -->|Dispatch Query + Response| RelevanceAgent
+    Orchestrator -->|Dispatch Ground Truth + Response| AccuracyAgent
+    Orchestrator -->|Dispatch Evidence + Response| HallucinationAgent
+    Orchestrator -->|Dispatch Prompt + Response| CompletenessAgent
+
+    %% Verdict Flow
+    RelevanceAgent -->|Relevance Score & Flags| VerdictAgent
+    AccuracyAgent -->|Accuracy Score & Flags| VerdictAgent
+    HallucinationAgent -->|Hallucination Risk & Flags| VerdictAgent
+    CompletenessAgent -->|Completeness Score & Flags| VerdictAgent
+
+    VerdictAgent --> ScoringVerdictMod
+    ScoringVerdictMod --> StructuredResultsMod
+    StructuredResultsMod -->|Update Evaluation Record| SubDB
+    StructuredResultsMod --> ReportGenMod
+    StructuredResultsMod --> DashboardView
+    BatchEvalMod -.-> Orchestrator
+    DashboardView -->|Render Results, Meters, Citations| WebUI

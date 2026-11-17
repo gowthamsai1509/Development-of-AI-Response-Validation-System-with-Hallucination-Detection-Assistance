@@ -1,0 +1,38 @@
+[
+  {
+    "id": "synthetic-rc-001",
+    "title": "Quantum Computing Principles",
+    "context": "Quantum computing utilizes principles of quantum mechanics such as superposition and entanglement. Unlike classical bits that can only be 0 or 1, qubits can exist in linear combinations of states. Superconducting circuits and trapped ions are two common hardware modalities used to build quantum processors. Quantum supremacy refers to a quantum device solving a computational problem that is infeasible for any classical supercomputer.",
+    "question": "What two physical hardware modalities are commonly used to build quantum processors?",
+    "answers": [
+      {"text": "Superconducting circuits and trapped ions", "answer_start": 218}
+    ]
+  },
+  {
+    "id": "synthetic-rc-002",
+    "title": "Solar Photovoltaic Energy",
+    "context": "Photovoltaic cells convert sunlight directly into electricity via the photovoltaic effect. When light photons strike the semiconductor material, usually silicon, electrons are excited and knocked loose, creating an electric current. Monocrystalline panels typically exhibit higher energy conversion efficiencies, often between 18 and 22 percent, compared to polycrystalline panels which average around 15 to 17 percent.",
+    "question": "What semiconductor material is most commonly used in photovoltaic cells?",
+    "answers": [
+      {"text": "silicon", "answer_start": 139}
+    ]
+  },
+  {
+    "id": "synthetic-rc-003",
+    "title": "Natural Language Processing and Attention",
+    "context": "The Transformer architecture was introduced in 2017, replacing recurrent neural networks with multi-head self-attention mechanisms. Self-attention enables models to weigh tokens dynamically across an entire sequence simultaneously rather than sequentially. This parallelization dramatically decreased training times and permitted scaling to billions of parameters.",
+    "question": "When was the Transformer architecture introduced?",
+    "answers": [
+      {"text": "2017", "answer_start": 44}
+    ]
+  },
+  {
+    "id": "synthetic-rc-004",
+    "title": "Retrieval Augmented Generation",
+    "context": "Retrieval Augmented Generation (RAG) integrates a retrieval model with a generative language model. In a standard RAG pipeline, incoming queries are embedded into high-dimensional vector representations and compared against an indexed vector database using similarity metrics such as cosine similarity. Relevant document chunks are injected into the context window of the LLM to ground the generation.",
+    "question": "How are incoming queries matched against indexed documents in a RAG pipeline?",
+    "answers": [
+      {"text": "using similarity metrics such as cosine similarity", "answer_start": 235}
+    ]
+  }
+]

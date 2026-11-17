@@ -1,0 +1,30 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Virtual Environments
+venv/
+env/
+.env
+.venv/
+
+# Database and Vector indices
+*.db
+*.sqlite
+*.sqlite3
+faiss_index/
+data/processed/faiss_index/
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and scratch
+*.log
+logs/
+scratch/

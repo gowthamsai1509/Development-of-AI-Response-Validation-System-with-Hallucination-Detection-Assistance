@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Response Validation System | Milestone 1</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">Infosys Springboard — Milestone 1</span>
+      <h1>AI Response Validation & Hallucination Detection</h1>
+      <p class="subtitle">Multi-Agent LLM-as-a-Judge Evaluation Framework Grounded in Public QA Benchmark Knowledge Base (TruthfulQA + SQuAD)</p>
+    </header>
+
+    <div class="grid">
+      <!-- Input Submission Module -->
+      <section class="card">
+        <div class="card-title">
+          <span>Evaluation Input Module</span>
+          <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted)">Single Submission Interface</span>
+        </div>
+
+        <div class="presets">
+          <span style="font-size: 0.8rem; align-self: center; font-weight: 600;">Test Presets:</span>
+          <button type="button" class="btn-preset" onclick="loadPreset('truthful')">TruthfulQA Valid</button>
+          <button type="button" class="btn-preset" onclick="loadPreset('hallucination')">TruthfulQA Hallucination</button>
+          <button type="button" class="btn-preset" onclick="loadPreset('squad')">SQuAD Extraction</button>
+        </div>
+
+        <form id="evalForm">
+          <div class="form-group">
+            <label for="question">Prompt / Question <span class="req">*</span></label>
+            <input type="text" id="question" required placeholder="e.g. Does cracking your knuckles cause arthritis?">
+          </div>
+
+          <div class="form-group">
+            <label for="aiResponse">AI-Generated Response <span class="req">*</span></label>
+            <textarea id="aiResponse" rows="4" required placeholder="Paste the AI response to be evaluated..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="referenceAnswer">Reference Answer <span class="opt">(Optional ground-truth)</span></label>
+            <textarea id="referenceAnswer" rows="2" placeholder="Optional verified reference answer..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="sourceDocument">Source Document / Reference Material <span class="opt">(Optional context)</span></label>
+            <textarea id="sourceDocument" rows="3" placeholder="Optional source text or article to ground the evaluation..."></textarea>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-primary">
+            <span>Run Multi-Agent Evaluation</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- Evaluation Output Module -->
+      <section class="card" id="resultCard">
+        <div class="card-title">
+          <span>Structured Evaluation Results</span>
+          <span id="evalStatus" style="font-size: 0.8rem; color: var(--text-muted)">Awaiting Submission</span>
+        </div>
+
+        <div id="emptyPrompt" class="empty-state">
+          <p>Submit an evaluation query or select a preset on the left to inspect multi-agent scoring and hallucination detection analysis.</p>
+        </div>
+
+        <div id="resultsContent" style="display: none;">
+          <div id="verdictBanner" class="verdict-banner"></div>
+
+          <div class="score-grid">
+            <div class="score-box">
+              <div class="score-title">Overall Confidence</div>
+              <div class="score-val" id="overallScore">-</div>
+            </div>
+            <div class="score-box">
+              <div class="score-title">Hallucination Risk</div>
+              <div class="score-val" id="hallucinationScore" style="color: var(--danger)">-</div>
+            </div>
+            <div class="score-box">
+              <div class="score-title">Factual Accuracy</div>
+              <div class="score-val" id="accuracyScore">-</div>
+            </div>
+            <div class="score-box">
+              <div class="score-title">Prompt Relevance</div>
+              <div class="score-val" id="relevanceScore">-</div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 0.95rem; margin-bottom: 12px; font-weight: 700;">Agent Evaluations</h3>
+          <div id="agentAnalyses"></div>
+
+          <h3 style="font-size: 0.95rem; margin: 16px 0 8px 0; font-weight: 700;">RAG Grounding Citations</h3>
+          <div id="evidenceList"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
