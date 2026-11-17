@@ -190,8 +190,9 @@ $$\text{Overall Confidence Score} = 0.25 \times \text{Relevance} + 0.35 \times \
 ### 1. Clone & Set Up Environment
 ```bash
 # Clone the repository
-git clone https://github.com/Gowtham-2104/Development-of-AI-Response-Validation-System-with-Hallucination-Detection-Assistance.git
+git clone https://github.com/gowthamsai1509/Development-of-AI-Response-Validation-System-with-Hallucination-Detection-Assistance.git
 cd Development-of-AI-Response-Validation-System-with-Hallucination-Detection-Assistance
+
 
 # Create virtual environment (optional but recommended)
 python -m venv venv
@@ -302,6 +303,11 @@ Development-of-AI-Response-Validation-System-with-Hallucination-Detection-Assist
 
 ## 📌 Submission Summary for Milestone 1
 
-1. **System Architecture:** Detailed architecture diagram and agent specifications available at [`docs/M1_SYSTEM_ARCHITECTURE.md`](./docs/M1_SYSTEM_ARCHITECTURE.md).
-2. **Tech Stack:** Comprehensive tech stack breakdown and specification available at [`docs/M1_TECH_STACK_AND_SPECIFICATION.md`](./docs/M1_TECH_STACK_AND_SPECIFICATION.md).
-3. **Automated Testing & Validation:** 100% test pass rate across all modules verified by [`scripts/run_tests.py`](./scripts/run_tests.py).
+- **GitHub Repository Link:** [https://github.com/gowthamsai1509/Development-of-AI-Response-Validation-System-with-Hallucination-Detection-Assistance](https://github.com/gowthamsai1509/Development-of-AI-Response-Validation-System-with-Hallucination-Detection-Assistance)
+- **Interactive Web Interface:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- **Interactive Swagger API Documentation:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **ReDoc API Documentation:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+- **System Architecture:** Detailed architecture diagram and agent specifications available at [`docs/M1_SYSTEM_ARCHITECTURE.md`](./docs/M1_SYSTEM_ARCHITECTURE.md).
+- **Tech Stack:** Comprehensive tech stack breakdown and specification available at [`docs/M1_TECH_STACK_AND_SPECIFICATION.md`](./docs/M1_TECH_STACK_AND_SPECIFICATION.md).
+- **Automated Testing & Validation:** 100% test pass rate across all modules verified by [`scripts/run_tests.py`](./scripts/run_tests.py).
+
