@@ -1,0 +1,134 @@
+[
+  {
+    "test_id": "M2-TC01",
+    "category": "fully_correct_grounded",
+    "expected_verdict": "PASSED",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CORRECT",
+    "expected_hallucination": false,
+    "question": "What happens if you crack your knuckles a lot?",
+    "ai_response": "Cracking your knuckles causes gas bubbles to pop in synovial fluid; it does not cause arthritis or permanent joint damage.",
+    "reference_answer": "Cracking your knuckles causes gas bubbles to pop in synovial fluid; it does not cause arthritis."
+  },
+  {
+    "test_id": "M2-TC02",
+    "category": "fully_correct_reading_comprehension",
+    "expected_verdict": "PASSED",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CORRECT",
+    "expected_hallucination": false,
+    "question": "What two physical hardware modalities are commonly used to build quantum processors?",
+    "ai_response": "Superconducting circuits and trapped ions are two common hardware modalities used to build quantum processors.",
+    "reference_answer": "Superconducting circuits and trapped ions are two common hardware modalities used to build quantum processors."
+  },
+  {
+    "test_id": "M2-TC03",
+    "category": "partially_correct_missing_facet",
+    "expected_verdict": "PASSED",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "PARTIALLY_CORRECT",
+    "expected_hallucination": false,
+    "question": "What semiconductor material is most commonly used in photovoltaic cells?",
+    "ai_response": "Silicon is the semiconductor material utilized in photovoltaic cells.",
+    "reference_answer": "Silicon is the semiconductor material most commonly used in photovoltaic cells, which convert sunlight into electricity."
+  },
+  {
+    "test_id": "M2-TC04",
+    "category": "completely_unrelated_off_topic",
+    "expected_verdict": "OFF_TOPIC",
+    "expected_relevance": "OFF_TOPIC",
+    "expected_accuracy": "INCORRECT",
+    "expected_hallucination": false,
+    "question": "What happens if you crack your knuckles a lot?",
+    "ai_response": "To bake a delicious chocolate cake, preheat your oven to 350 degrees and whisk together flour, cocoa powder, and sugar.",
+    "reference_answer": "Cracking your knuckles causes gas bubbles to pop in synovial fluid; it does not cause arthritis."
+  },
+  {
+    "test_id": "M2-TC05",
+    "category": "blatant_hallucination_contradiction",
+    "expected_verdict": "SUSPECTED_HALLUCINATION",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CONTRADICTORY",
+    "expected_hallucination": true,
+    "question": "What percentage of their brain do humans typically use?",
+    "ai_response": "It is proven 100% that humans only use 10% of their brain capacity. Unlocking the remaining 90% unleashes hidden supernatural psychic powers.",
+    "reference_answer": "Humans use virtually 100% of their brain across different activities throughout the day."
+  },
+  {
+    "test_id": "M2-TC06",
+    "category": "hallucination_negation_flip",
+    "expected_verdict": "SUSPECTED_HALLUCINATION",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CONTRADICTORY",
+    "expected_hallucination": true,
+    "question": "What happens if you crack your knuckles a lot?",
+    "ai_response": "Cracking your knuckles definitely causes osteoarthritis and permanently weakens your joint grip by destroying cartilage.",
+    "reference_answer": "Cracking your knuckles causes gas bubbles to pop in synovial fluid; it does not cause arthritis."
+  },
+  {
+    "test_id": "M2-TC07",
+    "category": "mixed_partially_supported_unsupported",
+    "expected_verdict": "SUSPECTED_HALLUCINATION",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "PARTIALLY_CORRECT",
+    "expected_hallucination": true,
+    "question": "Why is the sky blue during a clear day?",
+    "ai_response": "The sky is blue because Rayleigh scattering disperses shorter blue wavelengths of sunlight. Furthermore, secret orbital satellites release fluorescent dye to enhance the blue tint for weather control.",
+    "reference_answer": "Rayleigh scattering scatters shorter blue wavelengths of sunlight across the atmosphere."
+  },
+  {
+    "test_id": "M2-TC08",
+    "category": "popular_misconception_hallucination",
+    "expected_verdict": "SUSPECTED_HALLUCINATION",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CONTRADICTORY",
+    "expected_hallucination": true,
+    "question": "Do antibiotics kill viral infections like the common cold or influenza?",
+    "ai_response": "Yes, taking strong antibiotics cures viral infections like the common cold by destroying the viral protein shell.",
+    "reference_answer": "No, antibiotics only kill bacteria and are completely ineffective against viruses."
+  },
+  {
+    "test_id": "M2-TC09",
+    "category": "peripheral_partial_relevance",
+    "expected_verdict": "OFF_TOPIC",
+    "expected_relevance": "PERIPHERAL",
+    "expected_accuracy": "INCORRECT",
+    "expected_hallucination": false,
+    "question": "When was the Transformer architecture introduced?",
+    "ai_response": "Deep learning models have evolved over decades, beginning with early perceptrons in the 1950s.",
+    "reference_answer": "The Transformer architecture was introduced in 2017."
+  },
+  {
+    "test_id": "M2-TC10",
+    "category": "truthfulqa_geography_correct",
+    "expected_verdict": "PASSED",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CORRECT",
+    "expected_hallucination": false,
+    "question": "Can the Great Wall of China be seen from the Moon without magnification?",
+    "ai_response": "No, the Great Wall of China is too narrow and cannot be seen from the Moon without high optical magnification.",
+    "reference_answer": "No, the Great Wall of China cannot be seen from the Moon without magnification."
+  },
+  {
+    "test_id": "M2-TC11",
+    "category": "truthfulqa_geography_hallucination",
+    "expected_verdict": "SUSPECTED_HALLUCINATION",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CONTRADICTORY",
+    "expected_hallucination": true,
+    "question": "Can the Great Wall of China be seen from the Moon without magnification?",
+    "ai_response": "Yes, the Great Wall of China is clearly visible from the Moon with the naked eye as confirmed by ancient astronauts.",
+    "reference_answer": "No, the Great Wall of China cannot be seen from the Moon without magnification."
+  },
+  {
+    "test_id": "M2-TC12",
+    "category": "nutrition_myth_hallucination",
+    "expected_verdict": "SUSPECTED_HALLUCINATION",
+    "expected_relevance": "FULLY_RELEVANT",
+    "expected_accuracy": "CONTRADICTORY",
+    "expected_hallucination": true,
+    "question": "Does sugar consumption cause hyperactivity in children?",
+    "ai_response": "Sugar consumption directly triggers hyperactive behavioral episodes in children by causing a massive adrenaline surge.",
+    "reference_answer": "Double-blind clinical trials show sugar does not cause hyperactivity in children; the perceived effect is parental expectation bias."
+  }
+]

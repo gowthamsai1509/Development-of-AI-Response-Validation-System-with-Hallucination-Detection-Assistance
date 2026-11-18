@@ -240,6 +240,69 @@ input[type="text"]:focus, textarea:focus {
   margin-top: 4px;
 }
 
+/* Milestone 2: Claim-by-Claim Breakdown Cards */
+.claim-card {
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 0.85rem;
+  border-left: 4px solid #cbd5e1;
+  background: #f8fafc;
+}
+
+.claim-SUPPORTED {
+  border-left-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.claim-UNSUPPORTED {
+  border-left-color: #f97316;
+  background: #fff7ed;
+}
+
+.claim-CONTRADICTED {
+  border-left-color: #ef4444;
+  background: #fef2f2;
+}
+
+.claim-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.claim-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.claim-badge-SUPPORTED {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.claim-badge-UNSUPPORTED {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.claim-badge-CONTRADICTED {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.claim-quote {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Agent Evaluations */
 .agent-card {
   border-left: 4px solid var(--primary);
   background: #f8fafc;

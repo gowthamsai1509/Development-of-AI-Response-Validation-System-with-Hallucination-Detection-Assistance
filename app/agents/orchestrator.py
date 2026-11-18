@@ -17,6 +17,8 @@ class EvaluationOrchestrator:
     """
     Coordinates end-to-end evaluation lifecycle:
     Retrieval -> Agent Dispatch -> Verdict Synthesis -> Database Persistence
+    Integrates Milestone 2 granular agent evaluations (claim-level hallucination breakdown,
+    structured evidence, and relevance levels).
     """
     def __init__(self):
         self.retriever = RAGRetriever()
@@ -53,36 +55,64 @@ class EvaluationOrchestrator:
             retrieval_evidences.append(evidence)
             retrieved_context_str += f"\n[{item['dataset']}: {item['title']}] {item['text']}\n"
 
-        # Step 2: Agent Dispatch & Evaluation
+        # Step 2: Milestone 2 Granular Analysis
+        rel_detail = self.relevance_agent.analyze_relevance(
+            question=submission.question,
+            ai_response=submission.ai_response
+        )
+        acc_detail = self.accuracy_agent.analyze_accuracy(
+            question=submission.question,
+            ai_response=submission.ai_response,
+            reference_answer=submission.reference_answer,
+            retrieved_context=retrieved_context_str,
+            source_document=submission.source_document
+        )
+        hal_detail = self.hallucination_agent.analyze_hallucination(
+            question=submission.question,
+            ai_response=submission.ai_response,
+            reference_answer=submission.reference_answer,
+            retrieved_context=retrieved_context_str,
+            source_document=submission.source_document
+        )
+        com_verdict = self.completeness_agent.evaluate(
+            question=submission.question,
+            ai_response=submission.ai_response,
+            reference_answer=submission.reference_answer,
+            retrieved_context=retrieved_context_str,
+            source_document=submission.source_document
+        )
+
+        # Build standard AgentVerdicts for synthesis
         agent_verdicts: List[AgentVerdict] = [
-            self.relevance_agent.evaluate(
-                question=submission.question,
-                ai_response=submission.ai_response,
-                reference_answer=submission.reference_answer,
-                retrieved_context=retrieved_context_str,
-                source_document=submission.source_document
+            AgentVerdict(
+                agent_name=self.relevance_agent.name,
+                dimension=self.relevance_agent.dimension,
+                score=rel_detail.score,
+                reasoning=rel_detail.reasoning,
+                flags=rel_detail.flags,
+                metadata={"level": rel_detail.level.value, "matched_topics": rel_detail.matched_topics}
             ),
-            self.accuracy_agent.evaluate(
-                question=submission.question,
-                ai_response=submission.ai_response,
-                reference_answer=submission.reference_answer,
-                retrieved_context=retrieved_context_str,
-                source_document=submission.source_document
+            AgentVerdict(
+                agent_name=self.accuracy_agent.name,
+                dimension=self.accuracy_agent.dimension,
+                score=acc_detail.score,
+                reasoning=acc_detail.reasoning,
+                flags=acc_detail.flags,
+                metadata={"level": acc_detail.level.value, "source_used": acc_detail.source_used}
             ),
-            self.hallucination_agent.evaluate(
-                question=submission.question,
-                ai_response=submission.ai_response,
-                reference_answer=submission.reference_answer,
-                retrieved_context=retrieved_context_str,
-                source_document=submission.source_document
+            AgentVerdict(
+                agent_name=self.hallucination_agent.name,
+                dimension=self.hallucination_agent.dimension,
+                score=hal_detail.hallucination_score,
+                reasoning=hal_detail.reasoning,
+                flags=hal_detail.flags,
+                metadata={
+                    "is_hallucinated": hal_detail.is_hallucinated,
+                    "flagged_statements": hal_detail.flagged_statements,
+                    "total_claims": hal_detail.total_claims
+                }
             ),
-            self.completeness_agent.evaluate(
-                question=submission.question,
-                ai_response=submission.ai_response,
-                reference_answer=submission.reference_answer,
-                retrieved_context=retrieved_context_str,
-                source_document=submission.source_document
-            )
+            com_verdict
         ]
 
         # Step 3: Synthesis & Verdict
@@ -107,6 +137,9 @@ class EvaluationOrchestrator:
                 verdict=verdict.value,
                 agent_feedback={
                     "agent_analyses": [a.model_dump() for a in agent_verdicts],
+                    "relevance_detail": rel_detail.model_dump(),
+                    "accuracy_detail": acc_detail.model_dump(),
+                    "hallucination_detail": hal_detail.model_dump(),
                     "flags": flags
                 }
             )
@@ -121,5 +154,8 @@ class EvaluationOrchestrator:
             scores=scores,
             agent_analyses=agent_verdicts,
             retrieved_evidences=retrieval_evidences,
+            relevance_detail=rel_detail,
+            accuracy_detail=acc_detail,
+            hallucination_detail=hal_detail,
             timestamp=datetime.datetime.utcnow()
         )

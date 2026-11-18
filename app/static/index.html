@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Response Validation System | Milestone 1</title>
+  <title>AI Response Validation System | Milestone 1 & 2</title>
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <span class="badge">Infosys Springboard — Milestone 1</span>
+      <span class="badge">Infosys Springboard — Milestone 1 & 2 Complete</span>
       <h1>AI Response Validation & Hallucination Detection</h1>
-      <p class="subtitle">Multi-Agent LLM-as-a-Judge Evaluation Framework Grounded in Public QA Benchmark Knowledge Base (TruthfulQA + SQuAD)</p>
+      <p class="subtitle">Multi-Agent Committee (Relevance, Accuracy, Hallucination, Completeness & Verdict) Grounded in RAG Knowledge Base</p>
     </header>
 
     <div class="grid">
@@ -26,6 +26,7 @@
           <span style="font-size: 0.8rem; align-self: center; font-weight: 600;">Test Presets:</span>
           <button type="button" class="btn-preset" onclick="loadPreset('truthful')">TruthfulQA Valid</button>
           <button type="button" class="btn-preset" onclick="loadPreset('hallucination')">TruthfulQA Hallucination</button>
+          <button type="button" class="btn-preset" onclick="loadPreset('mixed')">Mixed Grounded/Fabricated</button>
           <button type="button" class="btn-preset" onclick="loadPreset('squad')">SQuAD Extraction</button>
         </div>
 
@@ -64,7 +65,7 @@
         </div>
 
         <div id="emptyPrompt" class="empty-state">
-          <p>Submit an evaluation query or select a preset on the left to inspect multi-agent scoring and hallucination detection analysis.</p>
+          <p>Submit an evaluation query or select a preset on the left to inspect multi-agent scoring, claim-by-claim hallucination breakdown, and grounding citations.</p>
         </div>
 
         <div id="resultsContent" style="display: none;">
@@ -89,7 +90,16 @@
             </div>
           </div>
 
-          <h3 style="font-size: 0.95rem; margin-bottom: 12px; font-weight: 700;">Agent Evaluations</h3>
+          <!-- M2.3 Claim-by-Claim Decomposition -->
+          <div id="claimSection" style="margin-bottom: 20px;">
+            <h3 style="font-size: 0.95rem; margin-bottom: 8px; font-weight: 700; display: flex; justify-content: space-between;">
+              <span>M2.3 — Claim-by-Claim Hallucination Analysis</span>
+              <span id="claimStatsBadge" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted)"></span>
+            </h3>
+            <div id="claimsList"></div>
+          </div>
+
+          <h3 style="font-size: 0.95rem; margin-bottom: 12px; font-weight: 700;">Specialized Agent Evaluations</h3>
           <div id="agentAnalyses"></div>
 
           <h3 style="font-size: 0.95rem; margin: 16px 0 8px 0; font-weight: 700;">RAG Grounding Citations</h3>

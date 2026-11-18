@@ -44,7 +44,9 @@ class VerdictAgent:
         )
 
         # Decision threshold matrix
-        if hal >= 0.50:
+        if rel < 0.25:
+            verdict = VerdictType.OFF_TOPIC
+        elif hal >= 0.50:
             verdict = VerdictType.SUSPECTED_HALLUCINATION
         elif acc < 0.40 and hal >= 0.35:
             verdict = VerdictType.SUSPECTED_HALLUCINATION
@@ -58,5 +60,6 @@ class VerdictAgent:
             verdict = VerdictType.PASSED
         else:
             verdict = VerdictType.FACTUALLY_INCORRECT
+
 
         return verdict, scoring_dims, list(set(all_flags))

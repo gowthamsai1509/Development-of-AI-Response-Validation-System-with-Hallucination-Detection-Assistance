@@ -11,6 +11,12 @@ const presets = {
     referenceAnswer: "Humans use virtually 100% of their brain across different activities throughout the day.",
     sourceDocument: "Neuroimaging shows almost all areas of the human brain remain metabolically active even during sleep."
   },
+  mixed: {
+    question: "Why is the sky blue during a clear day?",
+    aiResponse: "The sky is blue because Rayleigh scattering disperses shorter blue wavelengths of sunlight. Furthermore, secret orbital satellites release fluorescent dye to enhance the blue tint for weather control.",
+    referenceAnswer: "Rayleigh scattering scatters shorter blue wavelengths of sunlight across the atmosphere.",
+    sourceDocument: "Rayleigh scattering governs the dispersion of electromagnetic radiation by particles in Earth's atmosphere."
+  },
   squad: {
     question: "What two physical hardware modalities are commonly used to build quantum processors?",
     aiResponse: "Quantum processors are commonly built using superconducting circuits and trapped ions.",
@@ -84,6 +90,34 @@ function renderResults(data) {
   document.getElementById("accuracyScore").innerText = `${(data.scores.accuracy_score * 100).toFixed(0)}%`;
   document.getElementById("relevanceScore").innerText = `${(data.scores.relevance_score * 100).toFixed(0)}%`;
 
+  // M2.3 Claim-by-Claim Decomposition Rendering
+  const claimsList = document.getElementById("claimsList");
+  const claimStatsBadge = document.getElementById("claimStatsBadge");
+  claimsList.innerHTML = "";
+
+  if (data.hallucination_detail && data.hallucination_detail.claim_breakdown && data.hallucination_detail.claim_breakdown.length > 0) {
+    const h = data.hallucination_detail;
+    claimStatsBadge.innerText = `${h.total_claims} claims (${h.supported_claims} supported, ${h.unsupported_claims} unsupported, ${h.contradicted_claims} contradicted)`;
+
+    h.claim_breakdown.forEach((c) => {
+      const card = document.createElement("div");
+      card.className = `claim-card claim-${c.status}`;
+      card.innerHTML = `
+        <div class="claim-header">
+          <strong>Claim #${c.claim_id}</strong>
+          <span class="claim-badge claim-badge-${c.status}">${c.status} (${(c.confidence * 100).toFixed(0)}%)</span>
+        </div>
+        <div style="font-weight: 500; margin-bottom: 4px;">"${c.statement}"</div>
+        <div style="font-size: 0.8rem; color: #475569;">${c.reasoning}</div>
+        ${c.evidence_quote ? `<div class="claim-quote">Quote: ${c.evidence_quote}</div>` : ""}
+      `;
+      claimsList.appendChild(card);
+    });
+  } else {
+    claimStatsBadge.innerText = "";
+    claimsList.innerHTML = "<p style='font-size:0.8rem; color:var(--text-muted)'>No granular claim breakdown available.</p>";
+  }
+
   // Agent cards
   const agentContainer = document.getElementById("agentAnalyses");
   agentContainer.innerHTML = "";
@@ -91,9 +125,11 @@ function renderResults(data) {
     const card = document.createElement("div");
     card.className = "agent-card";
     const tagsHtml = (a.flags || []).map(f => `<span class="tag">${f}</span>`).join("");
+    const metaInfo = a.metadata && a.metadata.level ? `<span style="font-size:0.75rem; font-weight:700; color:#4361ee; margin-left:8px;">[${a.metadata.level}]</span>` : "";
+    
     card.innerHTML = `
       <div class="agent-header">
-        <span>${a.agent_name} (${a.dimension.toUpperCase()})</span>
+        <span>${a.agent_name} (${a.dimension.toUpperCase()}) ${metaInfo}</span>
         <span>Score: ${(a.score * 100).toFixed(0)}%</span>
       </div>
       <div class="agent-reasoning">${a.reasoning}</div>

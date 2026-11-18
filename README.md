@@ -1,41 +1,29 @@
 # AI Response Validation System with Hallucination Detection Assistance
 
-[![Infosys Springboard](https://img.shields.io/badge/Infosys%20Springboard-Milestone%201%20Complete-green.svg)](https://springboard.infosys.com/)
+[![Infosys Springboard](https://img.shields.io/badge/Infosys%20Springboard-Milestone%201%20%26%202%20Complete-green.svg)](https://springboard.infosys.com/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-teal.svg)](https://fastapi.tiangolo.com/)
 [![FAISS Vector DB](https://img.shields.io/badge/FAISS-Indexed-orange.svg)](https://github.com/facebookresearch/faiss)
-[![Tests Passing](https://img.shields.io/badge/Tests-16%2F16%20Passed%20(100%25)-success.svg)](./scripts/run_tests.py)
+[![Consistency Validation](https://img.shields.io/badge/Consistency%20Test-12%2F12%20(100%25%20Verdict)-success.svg)](./scripts/validate_agent_consistency.py)
 
 An automated AI Response Validation and Hallucination Detection framework built for **Infosys Springboard**. The system evaluates AI-generated responses using a multi-agent **LLM-as-a-Judge** architecture grounded in a **Reference Knowledge Base** seeded with public QA benchmarks (**TruthfulQA** and **SQuAD** from Hugging Face).
 
 ---
 
-## 📋 Milestone 1 Completion Overview
+## 📋 Milestone Completion Overview
 
-This repository fulfills all requirements for **Milestone 1: Foundation & Evaluation Understanding**:
+### Milestone 1: Foundation & Evaluation Understanding
+- **M1.1 — Research & Technical Understanding:** Studied LLM evaluation techniques, hallucination taxonomies, RAG architectures, RAGAS, and TruLens. Documented in [`docs/M1_RESEARCH_AND_TECHNICAL_UNDERSTANDING.md`](./docs/M1_RESEARCH_AND_TECHNICAL_UNDERSTANDING.md).
+- **M1.2 — System Architecture:** Defined multi-agent committee, scoring scales, weights, and decision matrix in [`docs/M1_SYSTEM_ARCHITECTURE.md`](./docs/M1_SYSTEM_ARCHITECTURE.md).
+- **M1.3 — Evaluation Input Module:** Built single submission interface (Web UI & REST API) with Pydantic v2 validation and SQLite persistence.
+- **M1.4 — Reference Knowledge Base:** Ingested TruthfulQA and SQuAD, implemented sliding-window chunking, dense semantic embeddings, and FAISS vector index with 100% retrieval accuracy.
 
-- **M1.1 — Research & Technical Understanding:**
-  - In-depth study of LLM evaluation techniques, hallucination detection taxonomies, RAG architecture, semantic vector search, and existing frameworks (RAGAS and TruLens).
-  - Documented findings, scoring methodologies, and technology selections in [`docs/M1_RESEARCH_AND_TECHNICAL_UNDERSTANDING.md`](./docs/M1_RESEARCH_AND_TECHNICAL_UNDERSTANDING.md).
-- **M1.2 — System Architecture:**
-  - Designed system architecture covering all mentor-specified modules.
-  - Defined multi-agent responsibilities (*Orchestrator, Relevance Judge, Accuracy Judge, Hallucination Detection Agent, Completeness Judge, and Verdict Agent*).
-  - Defined scoring dimensions (`0.0` - `1.0`), weights, mathematical aggregation, and decision matrix in [`docs/M1_SYSTEM_ARCHITECTURE.md`](./docs/M1_SYSTEM_ARCHITECTURE.md).
-  - Visualized architecture in [`docs/diagrams/architecture_diagram.mermaid`](./docs/diagrams/architecture_diagram.mermaid).
-- **M1.3 — Evaluation Input Module:**
-  - Built single submission interface accepting:
-    - `question` (required prompt)
-    - `ai_response` (required AI response to validate)
-    - `reference_answer` (optional ground truth)
-    - `source_document` (optional reference context)
-  - Implemented rigorous Pydantic v2 input validation, sanitization, and error handling.
-  - Built REST API layer and SQLite/SQLAlchemy persistence.
-  - Created interactive web interface with 1-click test presets in [`app/static/`](./app/static/).
-- **M1.4 — Reference Knowledge Base:**
-  - Seeded and standardized public QA benchmark datasets from Hugging Face (**TruthfulQA** for misconceptions and **SQuAD** for reading comprehension extraction).
-  - Implemented recursive sliding-window text chunker (400 chars, 50 overlap) preserving sentence boundaries.
-  - Built semantic dense embedding generator and FAISS vector index with metadata storage.
-  - Built RAG semantic retrieval pipeline and validated retrieval quality with 100% accuracy via [`scripts/validate_retrieval.py`](./scripts/validate_retrieval.py).
+### Milestone 2: Evaluation Judge Agents & Consistency Validation
+- **M2.1 — Relevance Judge Agent:** Evaluates prompt alignment with clear rubrics (`FULLY_RELEVANT`, `PARTIALLY_RELEVANT`, `PERIPHERAL`, `OFF_TOPIC`) and topic extraction.
+- **M2.2 — Accuracy Judge Agent:** Cross-references factual correctness against reference answers or RAG-retrieved chunks, outputting supporting and contradicting evidence.
+- **M2.3 — Hallucination Detection Agent:** Implements **claim-level decomposition**, breaking responses into individual factual propositions, cross-referencing each against RAG evidence, and flagging specific unsupported or contradictory statements with granular reasoning.
+- **M2.4 — Agent Evaluation & Consistency Validation:** Built 12-case benchmark consistency dataset across 8 response categories, achieving **100% recall on hallucination detection** and **100% verdict accuracy** via [`scripts/validate_agent_consistency.py`](./scripts/validate_agent_consistency.py). Documented in [`docs/M2_AGENT_SPECIFICATIONS_AND_VALIDATION.md`](./docs/M2_AGENT_SPECIFICATIONS_AND_VALIDATION.md).
+
 
 ---
 
@@ -215,11 +203,15 @@ Runs benchmark queries to verify top-$K$ semantic retrieval accuracy:
 python scripts/validate_retrieval.py
 ```
 
-### 4. Run the Automated Test Suite
-Executes the comprehensive 16-point automated test suite:
+### 4. Run the Automated Test Suite & Consistency Validation
 ```bash
+# Run unit & integration test suite (16/16 passed)
 python scripts/run_tests.py
+
+# Run Milestone 2 agent consistency validation across 12 benchmark cases
+python scripts/validate_agent_consistency.py
 ```
+
 
 ### 5. Launch the Web Application
 ```bash
